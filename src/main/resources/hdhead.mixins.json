@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "teal.hdhead.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "client": [
+    "PlayerSkinProviderMixin",
+    "PlayerSkinTextureMixin",
+    "SkullBlockEntityRendererMixin",
+    "TextureUrlCheckerMixin",
+    "TUCInvoker"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

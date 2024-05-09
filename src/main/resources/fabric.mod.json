@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "hdhead",
+  "version": "${version}",
+  "name": "HD Heads",
+  "description": "Allows for HD Head creation & related tools",
+  "authors": [
+    "xTeal"
+  ],
+  "contact": {
+    "website": "https://github.com/tealreal/hdheadrestore",
+    "homepage": "https://github.com/tealreal/hdheadrestore",
+    "sources": "https://github.com/tealreal/hdheadrestore"
+  },
+  "license": "GPL v3",
+  "icon": "assets/hdhead/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "teal.hdhead.HDHeads"
+    ],
+    "modmenu": [
+      "teal.hdhead.ConfigScreen"
+    ]
+  },
+  "mixins": [
+    "hdhead.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": "*",
+    "fabric": "*",
+    "minecraft": "~1.20"
+  }
+}
