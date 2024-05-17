@@ -71,7 +71,7 @@ public interface Rawsay {
                     if (isRGB) index = 7;
 
                     // Get the TextColor from the code or RGB
-                    color = isRGB ? TextColor.parse(portion.substring(0, 7)) : TextColor.fromFormatting(Formatting.byCode(format));
+                    color = isRGB ? TextColor.fromRgb(Integer.parseInt(portion.substring(1, 7), 16)) : TextColor.fromFormatting(Formatting.byCode(format));
 
                     // Changing the color will reset the styling.
                     bold = italic = underlined = strikethrough = obfuscated = false;

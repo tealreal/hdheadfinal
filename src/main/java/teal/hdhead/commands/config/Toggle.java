@@ -35,7 +35,7 @@ public interface Toggle extends Command<FabricClientCommandSource> {
             }
             case HASH -> {
                 check = getConfig().isHash();
-                type = "vanilla hashing";
+                type = "better hashing";
             }
             case SHRINK -> {
                 check = getConfig().isShrinkHat();

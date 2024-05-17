@@ -4,7 +4,7 @@
   "package": "teal.hdhead.mixin",
   "compatibilityLevel": "JAVA_16",
   "client": [
-    "PlayerSkinProviderMixin",
+    "FileCacheMixin",
     "PlayerSkinTextureMixin",
     "SkullBlockEntityRendererMixin",
     "SkullEntityModelMixin",
