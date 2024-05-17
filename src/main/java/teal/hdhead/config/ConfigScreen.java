@@ -5,11 +5,11 @@ import com.terraformersmc.modmenu.api.ModMenuApi;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
+import me.shedaniel.clothconfig2.impl.builders.SubCategoryBuilder;
 import net.minecraft.text.Text;
 import teal.hdhead.HeadClient;
 
 import java.util.Arrays;
-import java.util.List;
 
 public final class ConfigScreen implements ModMenuApi {
     private static final ConfigObject virginConfig = new ConfigObject();
@@ -88,12 +88,42 @@ public final class ConfigScreen implements ModMenuApi {
 
             // MISCELLANEOUS OPTIONS
             ConfigCategory fun = builder.getOrCreateCategory(Text.literal("Miscellaneous"));
-            fun.addEntry(eb.startFloatList(Text.literal("Image "), List.of(config.getScaleInject()))
-                .setDefaultValue(List.of(virginConfig.getScaleInject()))
-                .setTooltip(Text.literal("Plays with how heads are rendered. -1 -1 1 is the default."))
-                .setSaveConsumer(s -> config.setScaleInject(s.toArray(Float[]::new)))
+            // NOT IDIOT-PROOF (List is not fixed size)
+            // fun.addEntry(eb.startFloatList(Text.literal("Image "), List.of(config.getScaleInject()))
+            //     .setDefaultValue(List.of(virginConfig.getScaleInject()))
+            //     .setTooltip(Text.literal("Plays with how heads are rendered. -1 -1 1 is the default."))
+            //     .setSaveConsumer(s -> config.setScaleInject(s.toArray(Float[]::new)))
+            //     .build()
+            // );
+            SubCategoryBuilder scaling = eb.startSubCategory(Text.literal("Image Scaling"));
+            Float[] scaleArr = config.getScaleInject();
+            // THE WETTEST CODE EVER
+            scaling.add(eb.startFloatField(Text.literal("X"), config.getScaleInject()[0])
+                .setDefaultValue(virginConfig.getScaleInject()[0])
+                .setSaveConsumer(s -> {
+                    scaleArr[0] = s;
+                    config.setScaleInject(scaleArr);
+                })
                 .build()
             );
+            scaling.add(eb.startFloatField(Text.literal("Y"), config.getScaleInject()[1])
+                .setDefaultValue(virginConfig.getScaleInject()[1])
+                .setSaveConsumer(s -> {
+                    scaleArr[1] = s;
+                    config.setScaleInject(scaleArr);
+                })
+                .build()
+            );
+            scaling.add(eb.startFloatField(Text.literal("Z"), config.getScaleInject()[2])
+                .setDefaultValue(virginConfig.getScaleInject()[2])
+                .setSaveConsumer(s -> {
+                    scaleArr[2] = s;
+                    config.setScaleInject(scaleArr);
+                })
+                .build()
+            );
+            scaling.setTooltip(Text.literal("Plays with how heads are rendered. -1 -1 1 is the default."));
+            fun.addEntry(scaling.build());
             return builder.build();
         };
     }
