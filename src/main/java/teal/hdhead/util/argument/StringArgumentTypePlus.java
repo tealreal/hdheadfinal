@@ -27,9 +27,9 @@ public class StringArgumentTypePlus implements ArgumentType<String> {
     }
 
     private static final Collection<String> EXAMPLES = List.of(
-            "hi",
-            "hello",
-            "ok"
+        "hi",
+        "hello",
+        "ok"
     );
 
     @Override

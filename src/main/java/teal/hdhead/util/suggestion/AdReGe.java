@@ -17,5 +17,8 @@ public class AdReGe implements SuggestionProvider<FabricClientCommandSource> {
         return builder.buildFuture();
     }
 
-    public static AdReGe get() { return new AdReGe() {}; }
+    public static AdReGe get() {
+        return new AdReGe() {
+        };
+    }
 }

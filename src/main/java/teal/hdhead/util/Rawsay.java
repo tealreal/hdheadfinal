@@ -23,7 +23,7 @@ public interface Rawsay {
     static String correctFormatting(String text, char separator) {
         char[] chars = text.toCharArray();
         for (int i = 0; i < chars.length; i++) {
-            if(chars[i] == separator && (format.indexOf(chars[i+1]) > -1 || (chars[i+1] == '#' && text.substring(i+2, i+8).matches("^[" + rgb + "]{6}$")))) {
+            if (chars[i] == separator && (format.indexOf(chars[i + 1]) > -1 || (chars[i + 1] == '#' && text.substring(i + 2, i + 8).matches("^[" + rgb + "]{6}$")))) {
                 chars[i] = FORMATTING_CODE_PREFIX;
             }
         }
@@ -41,7 +41,7 @@ public interface Rawsay {
         TextColor color = TextColor.fromFormatting(Formatting.WHITE);
         boolean bold, italic, underlined, strikethrough, obfuscated;
         bold = italic = underlined = strikethrough = obfuscated = false;
-        for (int i=0; i < readyToParse.length; i++) {
+        for (int i = 0; i < readyToParse.length; i++) {
             // §6hell§eo -> ['', '6hell', 'eo']
             String portion = readyToParse[i];
             // Amount of characters that is styling before the actual text

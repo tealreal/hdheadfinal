@@ -16,5 +16,7 @@ public class GeCh implements SuggestionProvider<FabricClientCommandSource> {
         return builder.buildFuture();
     }
 
-    public static GeCh get() { return new GeCh(); }
+    public static GeCh get() {
+        return new GeCh();
+    }
 }

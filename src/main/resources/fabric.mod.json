@@ -5,7 +5,7 @@
   "name": "HD Heads",
   "description": "Allows for HD Head creation & related tools",
   "authors": [
-    "xTeal"
+    "teal"
   ],
   "contact": {
     "website": "https://github.com/tealreal/hdheadrestore",
@@ -17,18 +17,22 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "teal.hdhead.HDHeads"
+      "teal.hdhead.HeadClient"
     ],
     "modmenu": [
-      "teal.hdhead.ConfigScreen"
+      "teal.hdhead.config.ConfigScreen"
     ]
   },
   "mixins": [
     "hdhead.mixins.json"
   ],
   "depends": {
-    "fabricloader": "*",
-    "fabric": "*",
-    "minecraft": "~1.20"
+    "minecraft": "~${minecraft_version}",
+    "fabricloader": ">=${loader_version}",
+    "fabric": ">=${fabric_version}"
+  },
+  "suggests": {
+    "cloth-config": ">=${cloth_version}",
+    "modmenu": ">=${modmenu_version}"
   }
 }

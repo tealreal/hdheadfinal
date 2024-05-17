@@ -3,9 +3,11 @@ package teal.hdhead.commands;
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.LiteralMessage;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -15,7 +17,7 @@ import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Uuids;
-import teal.hdhead.HDHeads;
+import teal.hdhead.HeadClient;
 import teal.hdhead.mixin.TUCInvoker;
 import teal.hdhead.util.Rawsay;
 import teal.hdhead.util.argument.StringArgumentTypePlus;
@@ -29,7 +31,8 @@ public interface CreateHead extends Command<FabricClientCommandSource> {
     @Override
     default int run(CommandContext<FabricClientCommandSource> context) throws CommandSyntaxException {
         FabricClientCommandSource source = context.getSource();
-        if (!source.getPlayer().isCreative()) throw new SimpleCommandExceptionType(new LiteralMessage("You must be in creative mode.")).create();
+        if (!source.getPlayer().isCreative())
+            throw new SimpleCommandExceptionType(new LiteralMessage("You must be in creative mode.")).create();
 
         URL url = URLArgumentType.getURL(context, "url");
         int[] intArrUUID = Uuids.toIntArray(UUID.randomUUID());
@@ -50,27 +53,25 @@ public interface CreateHead extends Command<FabricClientCommandSource> {
         head.setNbt(nbt);
         try {
             head.setCustomName(Rawsay.parseFormatting(StringArgumentTypePlus.getString(context, "name"), '&'));
-        } catch (IllegalArgumentException IAE) {
+        } catch (IllegalArgumentException ignored) {
 
         }
 
-        for (int i = 0; i < 9; i++)
-        {
+        for (int i = 0; i < 9; i++) {
             if (!source.getPlayer().getInventory().getStack(i).isEmpty()) continue;
             source.getPlayer().networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(36 + i, head));
             source.getPlayer().sendMessage(Text.literal("Produced a new HD Head from ").append(Text.literal(url.toString()).formatted(Formatting.UNDERLINE)), false);
-            // OH, that's how you use an invoker
             if (!TUCInvoker.callIsAllowedTextureDomain(url.toString()))
                 source.getPlayer().sendMessage(
-                        Text.of(Formatting.GOLD.toString() +
-                                Formatting.BOLD +
-                                "WARNING: " +
-                                Formatting.GRAY +
-                                Formatting.ITALIC +
-                                "You created a head with a URL that isn't " +
-                                (HDHeads.doRunMod() ? "whitelisted or was blacklisted" : "available with the mod off") +
-                                ", so it will not render."
-                        ), false);
+                    Text.of(Formatting.GOLD.toString() +
+                            Formatting.BOLD +
+                            "WARNING: " +
+                            Formatting.GRAY +
+                            Formatting.ITALIC +
+                            "You created a head with a URL that isn't " +
+                            (HeadClient.doRunMod() ? "whitelisted or was blacklisted" : "available with the mod off") +
+                            ", so it will not render."
+                    ), false);
             return 0;
         }
 
@@ -88,6 +89,17 @@ public interface CreateHead extends Command<FabricClientCommandSource> {
     }
 
     static CreateHead get() {
-        return new CreateHead() {};
+        return new CreateHead() {
+        };
+    }
+
+    static LiteralArgumentBuilder<FabricClientCommandSource> getCommandBuilder() {
+        return ClientCommandManager.literal("create")
+            .then(ClientCommandManager.argument("url", URLArgumentType.url())
+                .executes(CreateHead.get())
+                .then(ClientCommandManager.argument("name", StringArgumentTypePlus.paragraph())
+                    .executes(CreateHead.get())
+                )
+            );
     }
 }

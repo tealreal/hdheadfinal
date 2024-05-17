@@ -1,12 +1,10 @@
 # HD Head Restore
 
-## Download: See [releases](https://github.com/tealreal/hdheadrestore/releases).
-
 ## What is this mod?
 This mod does exactly what it says. It brings back HD Head / Custom Head / High Resolution Heads (or whatever else you might call it) usage on Minecraft 1.16.5 and above.
 This "bug" was patched in newer versions of Minecraft where you could use a scaled up version of a skin template to create textures, like a computer for instance.
 
-![Computer](/images/jcy43gdyiqn61.webp)
+![Computer Line-up](/images/airport4.png)
 
 It is obviously higher quality, bigger than 16 pixels per side.
 
@@ -19,9 +17,9 @@ You can see more examples at...:
 
 ### Where do I upload it?
 
-Originally you would abuse `education.minecraft.net` but they have fixed their site to not allow image uploads. This mod comes in, and you use an external image host like `imgbb.com` because it's not forcing ads.
+Originally you would abuse `education.minecraft.net` but they have fixed their site to not allow image uploads, and is blocked on newer versions of Minecraft. This mod comes in, and you use an external image host to allow people to see your heads. Personally, I use `imgbb.com` because it's not forcing ads.
 
-Take the DIRECT image link from `imgbb.com` (Looks like `ibb.co`), and run the command `/hdheads create <url>` in game.
+To make the head, get the direct image link and run the command `/hdheads create <url>` in game.
 
 ## Commands
 
@@ -50,9 +48,9 @@ Toggles the functionality of HD Heads:
 - `CHANGE` toggles by switching out the blacklisted and whitelisted URLs, and disables rendering of HD Heads.
 - `GET` shows the status of the mod.
 
-### `config MAXFILESIZE <CHANGE/GET> [<mb>]`
+### `config MAXFILESIZE <CHANGE/GET> [<kb>]`
 Sets the maximum allowed file size for incoming and already downloaded textures. The default is 50 MB.
-- `CHANGE` will allow you to set a size in MEGABYTES, not BYTES. Put -1 to allow images of any size.
+- `CHANGE` will allow you to set a size in KILOBYTES, not BYTES. Put -1 to allow images of any size.
 - `GET` shows the maximum size allowed for rendering HD Heads.
 
 ### `config MAXIMGSIZE <CHANGE/GET> [<size>]`
@@ -70,8 +68,6 @@ Configures the allowed url scheme with the specified parameters:
 EXAMPLES OF A VALID SCHEME: `https`, `http`
 
 ### `config MERGE <CHANGE/GET>`
-***It is not recommended to use this command unless you know what you are doing.***
-
 Toggles texture merging of HD Heads. This is off by default (vanilla behavior would be on), works by moving the textures by such a small amount that you will only notice that the textures of the head won't merge into the block it's on, also fixing wall heads. In order for this to work, config TOGGLE must be on.
 - `CHANGE` toggles the modification that prevents player head textures from merging with the block it is placed on.
 - `GET` shows the status of texture merging.
@@ -82,6 +78,11 @@ Toggles texture merging of HD Heads. This is off by default (vanilla behavior wo
 Modifies the file naming procedure to allow URLs with the same filename to go to different heads. In order for this to work, config TOGGLE must be on. Toggling between options will download textures you've already downloaded.
 - `CHANGE` toggles what string is used for hashing: the whole URL or just the filename.
 - `GET` shows the status of how textures are saved.
+- 
+### `config SHRINK <CHANGE/GET>`
+Changes how the hat layer on heads are rendered. In order for this to work, config TOGGLE must be on. If enabled, the hat layer will be shrunk to the size of the head layer to allow more immersion with textures like laptop heads. (Reload resources after changing)
+- `CHANGE` toggles how the hat layer on heads are rendered.
+- `GET` shows the status of how the hat layer is rendered.
 
 ### `config SCALE <CHANGE/GET> [<x_scale> <y_scale> <z_scale>]`
 ***It is not recommended to use this command unless you know what you are doing.***
@@ -92,56 +93,19 @@ Sets the scale at which player heads are rendered, intended to be a 'fun' comman
 
 ## Limitations / Commentary
 
+* Builds are provided for 1.17 only, since that is when HD Heads were patched.
 * Possible security vulnerabilities if others make heads that link to images with malicious code(?)
 * Client-side, not visible to everyone. People must have this mod or something similar to this to see your head
 * Lag when initially rendering chunks with heads (Usually brief, but is expected when you load large images into memory)
 * This mod contains features that limit the size (both height/width and filesize) of the HD head textures that are downloaded and rendered.
-* Minecraft stores heads using the filename encoded as a SHA-1, which leads to an issue of downloading heads with different URLs with the same file name, this mod fixes it. However, this will re-download all skins that come from Minecraft's servers.
+* Minecraft stores heads using the filename encoded as SHA-1, which leads to an issue of downloading heads with different URLs with the same file name, this mod fixes it. However, this will re-download all skins that come from Minecraft's servers. (The hash `skin.png` differs from `https://textures.minecraft.net/skins/skin.png`).
 * Don't make porn heads
 
 ## What did Mojang do?
 
-* Around 1.17, they added this line of code:
+Obviously in newer versions of Minecraft, they fixed the bug. HD Heads worked until 1.16, and were patched in 1.17. In 1.17, they blocked skins with URLs to `education.minecraft.net` in their `authlib` library, and also prevented heads already downloaded to your assets folder from rendering if they were greater than `64x64` or `64x32` pixels.
 
-```java
-// Excerpt from com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService:
-private static final String[] ALLOWED_DOMAINS = {
-        ".minecraft.net",
-        ".mojang.com",
-        };
-
-private static final String[] BLOCKED_DOMAINS = {
-        "bugs.mojang.com",
-        "education.minecraft.net",
-        "feedback.minecraft.net"
-        };
-```
-
-And from 1.16.5:
-```java
-// Excerpt from com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService:
-private static final String[] WHITELISTED_DOMAINS = {
-        ".minecraft.net",
-        ".mojang.com"
-        };
-```
-
-They patched the bug to not allow users creating heads by using the Mojira, Feedback, or Education sites. 
-* On top of this, 1.17 removed the function to see HD Heads (textures already downloaded) because of this line of code:
-
-```java
-// Excerpt from net.minecraft.client.texture.PlayerSkinTexture:
-        int i = image.getHeight();
-        int j = image.getWidth();
-        if (j != 64 || i != 32 && i != 64) {
-            image.close();
-            LOGGER.warn("Discarding incorrectly sized ({}x{}) skin texture from {}", j, i, this.url);
-            return null;
-        }
-        boolean bl2 = bl = i == 32;
-```
-
-...which 1.16.5 did not have. This mod fixes it via mixins.
+Using some Mixins, I reversed their fix to allow HD Heads to be rendered, downloaded from sites outside of `mojang.com`/`*.minecraft.net` AND also added some features like creating/analyzing heads. :)
 
 ## Texture Merge Fix
 
@@ -153,7 +117,11 @@ Look at the computer keyboards to see how axis fighting works.
 ### After
 ![After](/images/after.png)
 
+This will also work if the head is attached to a wall, it is not limited to "floor" heads.
+
 ## Photo Gallery
+
+(Photos taken using BSL shaders. Last three images however use Complementary Unbound w/ Euphoria patches and were taken in a world built by `Alco_Rs11`)
 
 ![Ariamaru Tomi PV Snapshot https://www.youtube.com/watch?v=BOIHRbnCulQ](/images/ariamarutomipv.png)
 ![Seggs Dungeon featuring angry red person](/images/weirdsexdungeon.png)
@@ -161,3 +129,6 @@ Look at the computer keyboards to see how axis fighting works.
 ![The setup you have](/images/thesetupyouhave.png)
 ![12k res. grotesque steve head by alcoRs11](/images/12k-res-grotesque-steve-head-by-alco-rs11.png)
 ![kashiwagi yuki middle finger](/images/kashiwagi-yuki-middle-finger-photoshop.png)
+![Airport 1](/images/airport1.png)
+![Airport 2](/images/airport2.png)
+![Airport 3](/images/airport3.png)

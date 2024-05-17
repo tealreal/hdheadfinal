@@ -8,6 +8,8 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.minecraft.text.Text;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;
@@ -22,9 +24,9 @@ public class URLArgumentType implements ArgumentType<URL> {
     }
 
     private static final Collection<String> EXAMPLES = List.of(
-            "https://minecraft.net",
-            "https://youtube.com",
-            "https://mojang.com"
+        "https://minecraft.net",
+        "https://youtube.com",
+        "https://mojang.com"
     );
 
     @Override
@@ -40,8 +42,8 @@ public class URLArgumentType implements ArgumentType<URL> {
         String urlString = reader.getString().substring(beginning, reader.getCursor());
 
         try {
-            return new URL(urlString);
-        } catch (MalformedURLException MUE) {
+            return new URI(urlString).toURL();
+        } catch (URISyntaxException | MalformedURLException MUE) {
             throw new SimpleCommandExceptionType(Text.of(MUE.getMessage())).createWithContext(reader);
         }
     }
