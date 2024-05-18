@@ -1,6 +1,9 @@
 package teal.hdhead.commands;
 
-import com.google.gson.JsonObject;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+import com.mojang.authlib.properties.Property;
+import com.mojang.authlib.properties.PropertyMap;
+import com.mojang.authlib.yggdrasil.response.MinecraftTexturesPayload;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.LiteralMessage;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -9,23 +12,22 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ProfileComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Uuids;
 import teal.hdhead.HeadClient;
+import teal.hdhead.config.ConfigObject;
 import teal.hdhead.mixin.TUCInvoker;
 import teal.hdhead.util.Rawsay;
 import teal.hdhead.util.argument.StringArgumentTypePlus;
 import teal.hdhead.util.argument.URLArgumentType;
 
 import java.net.URL;
-import java.util.Base64;
-import java.util.UUID;
+import java.util.*;
 
 public interface CreateHead extends Command<FabricClientCommandSource> {
     @Override
@@ -35,26 +37,15 @@ public interface CreateHead extends Command<FabricClientCommandSource> {
             throw new SimpleCommandExceptionType(new LiteralMessage("You must be in creative mode.")).create();
 
         URL url = URLArgumentType.getURL(context, "url");
-        int[] intArrUUID = Uuids.toIntArray(UUID.randomUUID());
-        NbtCompound nbt = new NbtCompound();
-        NbtCompound skullOwner = new NbtCompound();
-        nbt.putIntArray("SkullOwnerOrig", intArrUUID);
-        skullOwner.putIntArray("Id", intArrUUID);
-        skullOwner.putString("Name", "xtealhead" + Long.toString(System.currentTimeMillis(), 16));
-
-        NbtCompound properties = new NbtCompound();
-        NbtList textures = new NbtList();
-        textures.addElement(0, getB64Object(url));
-        properties.put("textures", textures);
-        skullOwner.put("Properties", properties);
-        nbt.put("SkullOwner", skullOwner);
-        ItemStack head = new ItemStack(Items.PLAYER_HEAD);
-
-        head.setNbt(nbt);
+        ItemStack head = new ItemStack(Items.PLAYER_HEAD, 1);
+        Property property = new Property("textures", getB64Object(url));
+        PropertyMap propertyMap = new PropertyMap();
+        propertyMap.put("textures", property);
+        ProfileComponent profileComponent = new ProfileComponent(Optional.of(("teal." + Long.toString(System.currentTimeMillis(), 16).repeat(16)).substring(0, 16)), Optional.of(UUID.randomUUID()), propertyMap);
+        head.set(DataComponentTypes.PROFILE, profileComponent);
         try {
-            head.setCustomName(Rawsay.parseFormatting(StringArgumentTypePlus.getString(context, "name"), '&'));
+            head.set(DataComponentTypes.CUSTOM_NAME, Rawsay.parseFormatting(StringArgumentTypePlus.getString(context, "name"), '&'));
         } catch (IllegalArgumentException ignored) {
-
         }
 
         for (int i = 0; i < 9; i++) {
@@ -78,14 +69,11 @@ public interface CreateHead extends Command<FabricClientCommandSource> {
         throw new SimpleCommandExceptionType(new LiteralMessage("Your hotbar is full. Clear out a slot and retry.")).create();
     }
 
-    static NbtCompound getB64Object(URL url) {
-        JsonObject obj = new JsonObject();
-        obj.add("textures", new JsonObject());
-        obj.getAsJsonObject("textures").add("SKIN", new JsonObject());
-        obj.getAsJsonObject("textures").getAsJsonObject("SKIN").addProperty("url", url.toString());
-        NbtCompound val = new NbtCompound();
-        val.putString("Value", Base64.getEncoder().encodeToString(obj.toString().getBytes()));
-        return val;
+    static String getB64Object(URL url) {
+        Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> textures = new HashMap<>();
+        textures.put(MinecraftProfileTexture.Type.SKIN, new MinecraftProfileTexture(url.toString(), null));
+        MinecraftTexturesPayload payload = new MinecraftTexturesPayload(0, null, null, false, textures);
+        return Base64.getEncoder().encodeToString(ConfigObject.gson.toJson(payload).getBytes());
     }
 
     static CreateHead get() {

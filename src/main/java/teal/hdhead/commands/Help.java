@@ -56,7 +56,7 @@ public interface Help extends Command<FabricClientCommandSource> {
                 • <BLACKLIST/WHITELIST> is only relevant for whitelist, as any domains not detected on whitelist will be ignored. blacklist can be used to block a subdomain. Use an asterisk (*) to allow or deny all sites.
                 • <ADD/REMOVE/GET> decides how you modify the list.
                 • [<sites>] are the sites you want to add or remove, to add multiple, separate using a semicolon (;).
-                
+                                
                 EXAMPLES OF A VALID SITE: .mojang.com  .minecraft.net  education.minecraft.net""",
             false
         ),
@@ -122,7 +122,7 @@ public interface Help extends Command<FabricClientCommandSource> {
                 Configures the allowed url scheme with the specified parameters:
                 • <ADD/REMOVE/GET> decides how you modify the list. Use an asterisk (*) to allow all schemes.
                 • [<schemes>] are the schemes you want to add or remove, to add multiple, separate using a semicolon (;).
-                
+                                
                 EXAMPLES OF A VALID SCHEME: https, http""",
             true
         );

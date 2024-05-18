@@ -61,17 +61,17 @@ public interface Site extends Command<FabricClientCommandSource> {
                     obj.setSites(use.toArray(new String[0]), whitelisted);
                     obj.write();
                     StringBuilder msg = new StringBuilder().append(format).append("Removed ")
-                            .append(whitelisted ? "whitelisted" : "blacklisted").append(" sites:\n")
+                        .append(whitelisted ? "whitelisted" : "blacklisted").append(" sites:\n")
                         .append(Formatting.GRAY).append(Formatting.ITALIC)
-                            .append(String.join(", ", modded))
-                            .append("\n\nYou may need to restart your game.");
+                        .append(String.join(", ", modded))
+                        .append("\n\nYou may need to restart your game.");
                     if (use.isEmpty()) {
                         msg.append("\n\n")
                             .append(Formatting.GOLD).append(Formatting.BOLD)
-                                .append("WARNING: ")
+                            .append("WARNING: ")
                             .append(Formatting.GRAY).append(Formatting.ITALIC)
-                                .append("There are no sites ")
-                                .append(whitelisted ? "whitelisted, so heads will not render." : "blacklisted.");
+                            .append("There are no sites ")
+                            .append(whitelisted ? "whitelisted, so heads will not render." : "blacklisted.");
                     }
                     player.sendMessage(Text.of(msg.toString()), false);
                 }
@@ -97,16 +97,16 @@ public interface Site extends Command<FabricClientCommandSource> {
                     obj.setSites(use.toArray(new String[0]), whitelisted);
                     obj.write();
                     StringBuilder msg = new StringBuilder().append(format).append("Added ")
-                            .append(whitelisted ? "whitelisted" : "blacklisted").append(" sites:\n")
+                        .append(whitelisted ? "whitelisted" : "blacklisted").append(" sites:\n")
                         .append(Formatting.GRAY).append(Formatting.ITALIC)
-                            .append(String.join(", ", modded))
-                            .append("\n\nYou may need to restart your game.");
+                        .append(String.join(", ", modded))
+                        .append("\n\nYou may need to restart your game.");
                     if (!whitelisted && modded.contains("*"))
                         msg.append("\n\n")
                             .append(Formatting.GOLD).append(Formatting.BOLD)
-                                .append("WARNING: ")
+                            .append("WARNING: ")
                             .append(Formatting.GRAY).append(Formatting.ITALIC)
-                                .append("You added * to the blacklist, which will block all textures.");
+                            .append("You added * to the blacklist, which will block all textures.");
                     player.sendMessage(Text.of(msg.toString()), false);
                 }
             }

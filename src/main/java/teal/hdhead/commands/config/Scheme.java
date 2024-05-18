@@ -55,17 +55,17 @@ public interface Scheme extends Command<FabricClientCommandSource> {
                     obj.write();
                     StringBuilder msg = new StringBuilder()
                         .append(Formatting.RED).append(Formatting.BOLD)
-                            .append("Removed schemes:\n")
+                        .append("Removed schemes:\n")
                         .append(Formatting.GRAY).append(Formatting.ITALIC)
-                            .append(String.join(", ", modded))
-                            .append("\n\nYou may need to restart your game.");
+                        .append(String.join(", ", modded))
+                        .append("\n\nYou may need to restart your game.");
                     if (use.isEmpty()) {
                         msg
                             .append("\n\n")
                             .append(Formatting.GOLD).append(Formatting.BOLD)
-                                .append("WARNING: ")
+                            .append("WARNING: ")
                             .append(Formatting.GRAY).append(Formatting.ITALIC)
-                                .append("There are no schemes, so heads will not render.");
+                            .append("There are no schemes, so heads will not render.");
                     }
                     player.sendMessage(Text.of(msg.toString()), false);
                 }

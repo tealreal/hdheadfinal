@@ -26,7 +26,7 @@ public final class ConfigObject {
     private boolean hash;
     private boolean shrinkHat;
 
-    private static final Gson gson = new GsonBuilder().create();
+    public static final Gson gson = new GsonBuilder().create();
 
     public void setSchemes(String[] schemes) {
         this.schemes = schemes;
