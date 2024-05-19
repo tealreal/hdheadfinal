@@ -50,7 +50,7 @@ public interface CreateHead extends Command<FabricClientCommandSource> {
         nbt.put("SkullOwner", skullOwner);
         ItemStack head = new ItemStack(Items.PLAYER_HEAD);
 
-        head.setNbt(nbt);
+        head.setTag(nbt);
         try {
             head.setCustomName(Rawsay.parseFormatting(StringArgumentTypePlus.getString(context, "name"), '&'));
         } catch (IllegalArgumentException ignored) {

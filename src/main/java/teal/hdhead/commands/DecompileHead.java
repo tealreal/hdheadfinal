@@ -31,7 +31,7 @@ public interface DecompileHead extends Command<FabricClientCommandSource> {
         ItemStack itemStack = player.getMainHandStack();
         try {
             if (itemStack.isOf(Items.PLAYER_HEAD)) {
-                NbtCompound nbt = itemStack.getNbt();
+                NbtCompound nbt = itemStack.getTag();
                 if(nbt == null) throw new SimpleCommandExceptionType(new LiteralMessage("Head does not have any NBT.")).create();
                 NbtCompound skullOwner = nbt.getCompound("SkullOwner");
                 if(skullOwner == null) throw new SimpleCommandExceptionType(new LiteralMessage("Head does not have a skull owner property.")).create();
