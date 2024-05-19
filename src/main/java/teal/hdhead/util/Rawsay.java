@@ -6,7 +6,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 
-import static net.minecraft.util.Formatting.FORMATTING_CODE_PREFIX;
+import static net.minecraft.util.Formatting.field_33292;
 
 // I wrote this and I hate it. Minecraft probably has some internal class, but I can't find it, so I wrote one to work in conjunction with hd heads.
 
@@ -24,7 +24,7 @@ public interface Rawsay {
         char[] chars = text.toCharArray();
         for (int i = 0; i < chars.length; i++) {
             if (chars[i] == separator && (format.indexOf(chars[i + 1]) > -1 || (chars[i + 1] == '#' && text.substring(i + 2, i + 8).matches("^[" + rgb + "]{6}$")))) {
-                chars[i] = FORMATTING_CODE_PREFIX;
+                chars[i] = field_33292;
             }
         }
         return String.valueOf(chars);
@@ -35,7 +35,7 @@ public interface Rawsay {
         MutableText msg = Text.of("").copy();
 
         // Split the string from correctFormatting by §, a character that cannot be typed in Minecraft.
-        String[] readyToParse = correctFormatting(text, separator).split(FORMATTING_CODE_PREFIX + "+");
+        String[] readyToParse = correctFormatting(text, separator).split(field_33292 + "+");
 
         // Setup default color and styling
         TextColor color = TextColor.fromFormatting(Formatting.WHITE);
@@ -87,7 +87,7 @@ public interface Rawsay {
                 .withItalic(italic)
                 .withUnderline(underlined)
                 .withStrikethrough(strikethrough)
-                .withObfuscated(obfuscated)
+                .obfuscated(obfuscated)
             ));
         }
         return msg;
