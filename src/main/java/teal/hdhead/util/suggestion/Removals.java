@@ -12,11 +12,6 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class Removals implements SuggestionProvider<FabricClientCommandSource> {
-    private final RemovalType removalType;
-
-    public Removals(RemovalType removalType) {
-        this.removalType = removalType;
-    }
 
     @Override
     public CompletableFuture<Suggestions> getSuggestions(CommandContext<FabricClientCommandSource> context, SuggestionsBuilder builder) {
@@ -24,16 +19,12 @@ public class Removals implements SuggestionProvider<FabricClientCommandSource> {
         if (method.equals("REMOVE")) {
             String base = "";
             try {
-                base = (StringArgumentTypePlus.getString(context, this.removalType.string) + ';').replaceAll(";+", ";").toLowerCase();
+                base = (StringArgumentTypePlus.getString(context, "sites") + ';').replaceAll(";+", ";").toLowerCase();
             } catch (IllegalArgumentException ignored) {
 
             }
             List<String> input = List.of(base.toLowerCase().split(";"));
-            String[] use = switch (this.removalType) {
-                case SITES ->
-                    HeadClient.getConfig().getSites(StringArgumentTypePlus.getString(context, "site_type").equals("WHITELIST"));
-                case SCHEMES -> HeadClient.getConfig().getSchemes();
-            };
+            String[] use = HeadClient.getConfig().getSites(StringArgumentTypePlus.getString(context, "site_type").equals("WHITELIST"));
             for (String s : use) {
                 if (input.contains(s.toLowerCase())) continue;
                 builder.suggest(base + s);
@@ -42,18 +33,7 @@ public class Removals implements SuggestionProvider<FabricClientCommandSource> {
         return builder.buildFuture();
     }
 
-    public static Removals get(RemovalType removalType) {
-        return new Removals(removalType);
-    }
-
-    public enum RemovalType {
-        SITES("sites"),
-        SCHEMES("schemes");
-
-        final String string;
-
-        RemovalType(String type) {
-            this.string = type;
-        }
+    public static Removals get() {
+        return new Removals();
     }
 }

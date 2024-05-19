@@ -42,7 +42,6 @@ public final class HeadClient implements ClientModInitializer {
                 .then(Help.getCommandBuilder())
                 // Configuration
                 .then(Site.getCommandBuilder())
-                .then(Scheme.getCommandBuilder())
                 .then(Scale.getCommandBuilder())
                 .then(ImgSize.getCommandBuilder())
                 .then(FileSize.getCommandBuilder())

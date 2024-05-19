@@ -18,7 +18,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Uuids;
 import teal.hdhead.HeadClient;
-import teal.hdhead.mixin.TUCInvoker;
+import teal.hdhead.mixin.YMSSInvoker;
 import teal.hdhead.util.Rawsay;
 import teal.hdhead.util.argument.StringArgumentTypePlus;
 import teal.hdhead.util.argument.URLArgumentType;
@@ -61,7 +61,7 @@ public interface CreateHead extends Command<FabricClientCommandSource> {
             if (!source.getPlayer().getInventory().getStack(i).isEmpty()) continue;
             source.getPlayer().networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(36 + i, head));
             source.getPlayer().sendMessage(Text.literal("Produced a new HD Head from ").append(Text.literal(url.toString()).formatted(Formatting.UNDERLINE)), false);
-            if (!TUCInvoker.callIsAllowedTextureDomain(url.toString()))
+            if (!YMSSInvoker.callIsAllowedTextureDomain(url.toString()))
                 source.getPlayer().sendMessage(
                     Text.of(Formatting.GOLD.toString() +
                             Formatting.BOLD +

@@ -132,7 +132,7 @@ public interface Site extends Command<FabricClientCommandSource> {
                 .then(ClientCommandManager.argument("site_type", StringArgumentTypePlus.string()).suggests(Site.getSiteType())
                     .then(ClientCommandManager.argument("method", StringArgumentTypePlus.string()).suggests(AdReGe.get())
                         .executes(Site.get())
-                        .then(ClientCommandManager.argument("sites", StringArgumentTypePlus.string()).suggests(Removals.get(Removals.RemovalType.SITES))
+                        .then(ClientCommandManager.argument("sites", StringArgumentTypePlus.string()).suggests(Removals.get())
                             .executes(Site.get())
                         )
                     )

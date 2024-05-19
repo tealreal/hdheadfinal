@@ -20,7 +20,8 @@ public final class ConfigScreen implements ModMenuApi {
             ConfigObject config = HeadClient.getConfig();
             ConfigBuilder builder = ConfigBuilder.create()
                 .setParentScreen(parent)
-                .setTitle(Text.literal("HD Heads Configuration"));
+                .setTitle(Text.literal("HD Heads Configuration"))
+                .setSavingRunnable(config::write);
             ConfigEntryBuilder eb = builder.entryBuilder();
 
             // USER EXPERIENCE OPTIONS
@@ -77,12 +78,6 @@ public final class ConfigScreen implements ModMenuApi {
                 .setDefaultValue(Arrays.asList(virginConfig.getSites(true)))
                 .setTooltip(Text.literal("Sites to accept heads from. Format like this: *.site.com"))
                 .setSaveConsumer(s -> config.setSites(s.toArray(new String[0]), true))
-                .build()
-            );
-            sites.addEntry(eb.startStrList(Text.literal("Allowed Schemes"), Arrays.asList(config.getSchemes()))
-                .setDefaultValue(Arrays.asList(virginConfig.getSchemes()))
-                .setTooltip(Text.literal("A list of allowed URL schemes. (i.e. https, wss)"))
-                .setSaveConsumer(s -> config.setSchemes(s.toArray(new String[0])))
                 .build()
             );
 

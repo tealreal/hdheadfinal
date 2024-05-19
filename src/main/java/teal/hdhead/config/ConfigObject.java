@@ -16,7 +16,6 @@ import java.io.Writer;
 public final class ConfigObject {
     private String[] blacklistSites;
     private String[] whitelistSites;
-    private String[] schemes;
 
     private Float[] scaleInject;
     private long thresholdSize;
@@ -27,14 +26,6 @@ public final class ConfigObject {
     private boolean shrinkHat;
 
     private static final Gson gson = new GsonBuilder().create();
-
-    public void setSchemes(String[] schemes) {
-        this.schemes = schemes;
-    }
-
-    public String[] getSchemes() {
-        return schemes;
-    }
 
     public void setSites(String[] sites, boolean whitelisted) {
         if (whitelisted) this.whitelistSites = sites;
@@ -96,8 +87,6 @@ public final class ConfigObject {
     }
 
     public ConfigObject() {
-        // URL schemes
-        schemes = new String[]{"http", "https"};
         // blacklisted
         blacklistSites = new String[]{};
         // whitelisted

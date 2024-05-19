@@ -1,11 +1,11 @@
 package teal.hdhead.mixin;
 
-import com.mojang.authlib.yggdrasil.TextureUrlChecker;
+import com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mixin(value = TextureUrlChecker.class, remap = false)
-public interface TUCInvoker {
+@Mixin(value = YggdrasilMinecraftSessionService.class, remap = false)
+public interface YMSSInvoker {
 
     @Invoker
     static boolean callIsAllowedTextureDomain(final String url) {

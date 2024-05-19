@@ -8,8 +8,8 @@
     "PlayerSkinTextureMixin",
     "SkullBlockEntityRendererMixin",
     "SkullEntityModelMixin",
-    "TextureUrlCheckerMixin",
-    "TUCInvoker"
+    "YggdrasilMinecraftSessionServiceMixin",
+    "YMSSInvoker"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -50,6 +50,7 @@ public interface Toggle extends Command<FabricClientCommandSource> {
                     case TOGGLE -> setRunMod(!check);
                     case MERGE -> getConfig().setMerge(!check);
                     case HASH -> getConfig().setHash(!check);
+                    case SHRINK -> getConfig().setShrinkHat(!check);
                 }
             }
             case "GET" ->

@@ -115,16 +115,6 @@ public interface Help extends Command<FabricClientCommandSource> {
                 • CHANGE will allow you to set a size in PIXELS. Put -1 to allow images of any size. This will be checked against both the image height and width.
                 • GET shows the maximum size allowed for rendering HD Heads.""",
             false
-        ),
-        ConfigScheme(
-            "config SCHEME <ADD/REMOVE/GET> [<schemes>]",
-            """
-                Configures the allowed url scheme with the specified parameters:
-                • <ADD/REMOVE/GET> decides how you modify the list. Use an asterisk (*) to allow all schemes.
-                • [<schemes>] are the schemes you want to add or remove, to add multiple, separate using a semicolon (;).
-                
-                EXAMPLES OF A VALID SCHEME: https, http""",
-            true
         );
 
         public final MutableText message;
