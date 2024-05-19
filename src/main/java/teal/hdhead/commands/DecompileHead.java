@@ -6,8 +6,8 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -49,56 +49,56 @@ public interface DecompileHead extends Command<FabricClientCommandSource> {
                     );
                     // Code written using cocaine
                     String url = obj.getCompound("textures").getCompound("SKIN").getString("url");
-                    MutableText text = itemStack.getName().copy();
-                    text.append(Text.literal("\nURL: ").setStyle(Style.EMPTY.withColor(Formatting.GRAY).withBold(false)));
-                    text.append(Text.literal(url).setStyle(Style.EMPTY
+                    MutableText text = itemStack.getName().shallowCopy();
+                    text.append(Text.of("\nURL: ").copy().setStyle(Style.EMPTY.withColor(Formatting.GRAY).withBold(false)));
+                    text.append(Text.of(url).copy().setStyle(Style.EMPTY
                         .withColor(Formatting.BLUE)
                         .withUnderline(true)
                         .withBold(false)
                         .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url))
-                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click here to open the texture")))
+                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.of("Click here to open the texture")))
                     ));
                     UUID id = getUUID(nbt, uuidType.ID);
                     if (id != null) {
-                        text.append(Text.literal("\n"))
-                            .append(Text.literal("UUID: ").setStyle(Style.EMPTY.withColor(Formatting.GRAY).withBold(false)))
-                            .append(Text.literal(id.toString()).setStyle(Style.EMPTY
+                        text.append(Text.of("\n"))
+                            .append(Text.of("UUID: ").copy().setStyle(Style.EMPTY.withColor(Formatting.GRAY).withBold(false)))
+                            .append(Text.of(id.toString()).copy().setStyle(Style.EMPTY
                                 .withColor(Formatting.WHITE)
                                 .withItalic(true)
                                 .withBold(false)
                                 .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, id.toString()))
-                                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click here to copy the UUID")))
+                                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.of("Click here to copy the UUID")))
                             ));
                     }
                     UUID or = getUUID(nbt, uuidType.SKULLOWNERORIG);
                     if (or != null) {
-                        text.append(Text.literal("\n"))
-                            .append(Text.literal("Original UUID: ").setStyle(Style.EMPTY.withColor(Formatting.GRAY).withBold(false)))
-                            .append(Text.literal(or.toString()).setStyle(Style.EMPTY
+                        text.append(Text.of("\n"))
+                            .append(Text.of("Original UUID: ").copy().setStyle(Style.EMPTY.withColor(Formatting.GRAY).withBold(false)))
+                            .append(Text.of(or.toString()).copy().setStyle(Style.EMPTY
                                 .withColor(Formatting.WHITE)
                                 .withItalic(true)
                                 .withBold(false)
                                 .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, or.toString()))
-                                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click here to copy the original UUID")))
+                                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.of("Click here to copy the original UUID")))
                             ));
                     }
                     if (!skullOwner.getString("Name").isEmpty()) {
-                        text.append(Text.literal("\n"))
-                            .append(Text.literal("Watermark: ").setStyle(Style.EMPTY.withColor(Formatting.GRAY).withBold(false)))
-                            .append(Text.literal(skullOwner.getString("Name")).setStyle(Style.EMPTY
+                        text.append(Text.of("\n"))
+                            .append(Text.of("Watermark: ").copy().setStyle(Style.EMPTY.withColor(Formatting.GRAY).withBold(false)))
+                            .append(Text.of(skullOwner.getString("Name")).copy().setStyle(Style.EMPTY
                                 .withColor(Formatting.WHITE)
                                 .withItalic(true)
                                 .withBold(false)
                                 .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, skullOwner.getString("Name")))
-                                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click here to copy the watermark")))
+                                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.of("Click here to copy the watermark")))
                             ));
                     }
-                    text.append(Text.literal("\n\n"))
-                        .append(Text.literal("[Click here to copy as JSON]").setStyle(Style.EMPTY
+                    text.append(Text.of("\n\n"))
+                        .append(Text.of("[Click here to copy as JSON]").copy().setStyle(Style.EMPTY
                             .withColor(Formatting.GREEN)
                             .withBold(true)
                             .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, nbt.asString()))
-                            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click here to copy the NBT")))
+                            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.of("Click here to copy the NBT")))
                         ));
                     context.getSource().getPlayer().sendMessage(text, false);
                 } catch (IllegalArgumentException IAE) {

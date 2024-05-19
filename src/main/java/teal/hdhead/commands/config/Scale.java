@@ -8,8 +8,8 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import teal.hdhead.HeadClient;
@@ -34,7 +34,7 @@ public interface Scale extends Command<FabricClientCommandSource> {
                     config.write();
                     prefix = "new";
                 } catch (IllegalArgumentException IAE) {
-                    throw new SimpleCommandExceptionType(Text.literal("Missing scale arguments.")).create();
+                    throw new SimpleCommandExceptionType(Text.of("Missing scale arguments.")).create();
                 }
             }
             case "GET" -> {

@@ -1,8 +1,9 @@
 package teal.hdhead;
 
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import teal.hdhead.commands.CreateHead;
@@ -10,6 +11,8 @@ import teal.hdhead.commands.DecompileHead;
 import teal.hdhead.commands.Help;
 import teal.hdhead.commands.config.*;
 import teal.hdhead.config.ConfigObject;
+
+import java.util.List;
 
 
 public final class HeadClient implements ClientModInitializer {
@@ -34,19 +37,22 @@ public final class HeadClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         logger.info("Initializing HD Heads by xTeal.");
-        ClientCommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess) -> dispatcher.register(
-            ClientCommandManager.literal("hdheads")
-                // Base
-                .then(CreateHead.getCommandBuilder())
-                .then(DecompileHead.getCommandBuilder())
-                .then(Help.getCommandBuilder())
-                // Configuration
-                .then(Site.getCommandBuilder())
-                .then(Scale.getCommandBuilder())
-                .then(ImgSize.getCommandBuilder())
-                .then(FileSize.getCommandBuilder())
-                .then(Toggle.getCommandBuilder())
-                .executes((ctx) -> 0)
-        )));
+        for(LiteralArgumentBuilder<FabricClientCommandSource> command : List.of(
+            // Base
+            CreateHead.getCommandBuilder(),
+            DecompileHead.getCommandBuilder(),
+            Help.getCommandBuilder(),
+            // Configuration
+            Site.getCommandBuilder(),
+            Scale.getCommandBuilder(),
+            ImgSize.getCommandBuilder(),
+            FileSize.getCommandBuilder(),
+            Toggle.getCommandBuilder()
+        )) {
+            ClientCommandManager.DISPATCHER.register(
+                ClientCommandManager.literal("hdheads")
+                    .then(command)
+            );
+        }
     }
 }

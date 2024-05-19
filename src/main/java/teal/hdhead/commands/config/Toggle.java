@@ -7,8 +7,8 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import teal.hdhead.util.argument.StringArgumentTypePlus;
@@ -45,7 +45,7 @@ public interface Toggle extends Command<FabricClientCommandSource> {
         }
         switch (StringArgumentType.getString(context, "event")) {
             case "CHANGE" -> {
-                context.getSource().getPlayer().sendMessage(Text.literal("Turned o" + (check ? "ff " : "n ") + type + "."), true);
+                context.getSource().getPlayer().sendMessage(Text.of("Turned o" + (check ? "ff " : "n ") + type + "."), true);
                 switch (getType()) {
                     case TOGGLE -> setRunMod(!check);
                     case MERGE -> getConfig().setMerge(!check);
@@ -54,7 +54,7 @@ public interface Toggle extends Command<FabricClientCommandSource> {
                 }
             }
             case "GET" ->
-                context.getSource().getPlayer().sendMessage(Text.literal(type.substring(0, 1).toUpperCase() + type.substring(1) + " is " + (check ? Formatting.GREEN.toString() + Formatting.BOLD + "ON" : Formatting.RED.toString() + Formatting.BOLD + "OFF")), true);
+                context.getSource().getPlayer().sendMessage(Text.of(type.substring(0, 1).toUpperCase() + type.substring(1) + " is " + (check ? Formatting.GREEN.toString() + Formatting.BOLD + "ON" : Formatting.RED.toString() + Formatting.BOLD + "OFF")), true);
             default -> throw new SimpleCommandExceptionType(new LiteralMessage("Invalid argument given.")).create();
         }
         return 0;

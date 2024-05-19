@@ -7,8 +7,8 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -60,7 +60,7 @@ public interface CreateHead extends Command<FabricClientCommandSource> {
         for (int i = 0; i < 9; i++) {
             if (!source.getPlayer().getInventory().getStack(i).isEmpty()) continue;
             source.getPlayer().networkHandler.sendPacket(new CreativeInventoryActionC2SPacket(36 + i, head));
-            source.getPlayer().sendMessage(Text.literal("Produced a new HD Head from ").append(Text.literal(url.toString()).formatted(Formatting.UNDERLINE)), false);
+            source.getPlayer().sendMessage(Text.of("Produced a new HD Head from ").copy().append(Text.of(url.toString()).copy().formatted(Formatting.UNDERLINE)), false);
             if (!YMSSInvoker.callIsAllowedTextureDomain(url.toString()))
                 source.getPlayer().sendMessage(
                     Text.of(Formatting.GOLD.toString() +

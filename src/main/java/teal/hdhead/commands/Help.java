@@ -3,8 +3,8 @@ package teal.hdhead.commands;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -120,10 +120,10 @@ public interface Help extends Command<FabricClientCommandSource> {
         public final MutableText message;
 
         Guide(String header, String contents, boolean advanced) {
-            message = Text.literal(header + "\n\n").setStyle(Style.EMPTY.withColor(Formatting.WHITE).withBold(true))
-                .append(Text.literal(contents).setStyle(Style.EMPTY.withColor(Formatting.GRAY).withItalic(true).withBold(false)));
+            message = Text.of(header + "\n\n").copy().setStyle(Style.EMPTY.withColor(Formatting.WHITE).withBold(true))
+                .append(Text.of(contents).copy().setStyle(Style.EMPTY.withColor(Formatting.GRAY).withItalic(true).withBold(false)));
             if (advanced)
-                message.append(Text.literal("\nIt is not recommended to use this command unless you know what you are doing.").setStyle(Style.EMPTY.withColor(Formatting.RED).withBold(true).withItalic(true)));
+                message.append(Text.of("\nIt is not recommended to use this command unless you know what you are doing.").copy().setStyle(Style.EMPTY.withColor(Formatting.RED).withBold(true).withItalic(true)));
         }
     }
 }

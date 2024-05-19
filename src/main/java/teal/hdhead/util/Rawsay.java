@@ -32,7 +32,7 @@ public interface Rawsay {
 
     static Text parseFormatting(String text, char separator) {
         // Create empty text to append to
-        MutableText msg = Text.literal("");
+        MutableText msg = Text.of("").copy();
 
         // Split the string from correctFormatting by §, a character that cannot be typed in Minecraft.
         String[] readyToParse = correctFormatting(text, separator).split(FORMATTING_CODE_PREFIX + "+");
@@ -81,7 +81,7 @@ public interface Rawsay {
                     bold = italic = underlined = strikethrough = obfuscated = false;
                 }
             } else index = 0;
-            msg.append(Text.literal(portion.substring(index)).setStyle(Style.EMPTY
+            msg.append(Text.of(portion.substring(index)).copy().setStyle(Style.EMPTY
                 .withColor(color)
                 .withBold(bold)
                 .withItalic(italic)
