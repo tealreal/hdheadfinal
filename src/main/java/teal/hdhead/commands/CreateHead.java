@@ -16,7 +16,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Uuids;
+import net.minecraft.util.dynamic.DynamicSerializableUuid;
 import teal.hdhead.HeadClient;
 import teal.hdhead.mixin.YMSSInvoker;
 import teal.hdhead.util.Rawsay;
@@ -35,7 +35,7 @@ public interface CreateHead extends Command<FabricClientCommandSource> {
             throw new SimpleCommandExceptionType(new LiteralMessage("You must be in creative mode.")).create();
 
         URL url = URLArgumentType.getURL(context, "url");
-        int[] intArrUUID = Uuids.toIntArray(UUID.randomUUID());
+        int[] intArrUUID = DynamicSerializableUuid.toIntArray(UUID.randomUUID());
         NbtCompound nbt = new NbtCompound();
         NbtCompound skullOwner = new NbtCompound();
         nbt.putIntArray("SkullOwnerOrig", intArrUUID);

@@ -17,7 +17,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Uuids;
+import net.minecraft.util.dynamic.DynamicSerializableUuid;
 import org.jetbrains.annotations.Nullable;
 import teal.hdhead.HeadClient;
 
@@ -133,7 +133,7 @@ public interface DecompileHead extends Command<FabricClientCommandSource> {
             if (ele == null) return null;
         }
         return switch (ele.getType()) {
-            case NbtElement.INT_ARRAY_TYPE -> Uuids.toUuid(nbt.getIntArray(property));
+            case NbtElement.INT_ARRAY_TYPE -> DynamicSerializableUuid.toUuid(nbt.getIntArray(property));
             case NbtElement.STRING_TYPE -> UUID.fromString(nbt.getString(property));
             default -> null;
         };
