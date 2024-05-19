@@ -20,7 +20,8 @@ public final class ConfigScreen implements ModMenuApi {
             ConfigObject config = HeadClient.getConfig();
             ConfigBuilder builder = ConfigBuilder.create()
                 .setParentScreen(parent)
-                .setTitle(Text.literal("HD Heads Configuration"));
+                .setTitle(Text.literal("HD Heads Configuration"))
+                .setSavingRunnable(config::write);
             ConfigEntryBuilder eb = builder.entryBuilder();
 
             // USER EXPERIENCE OPTIONS
