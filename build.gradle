@@ -32,9 +32,25 @@ processResources {
     filesMatching("fabric.mod.json") {
         expand project.properties
     }
+
+    outputs.upToDateWhen {
+        false
+    }
 }
 
-def targetJavaVersion = 21
+int indexMajor = minecraft_version.indexOf(".");
+int indexMinor = minecraft_version.indexOf(".", indexMajor + 1);
+int major = Integer.parseInt(minecraft_version.substring(indexMajor + 1, indexMinor))
+int minor = indexMinor < 0 ? 0 : Integer.parseInt(minecraft_version.substring(indexMinor + 1))
+def targetJavaVersion = 8
+if (major == 17) targetJavaVersion = 16
+else if (major == 18 || major == 19) targetJavaVersion = 17
+else if (major == 20) {
+    if (minor == 5 || minor == 6)
+        targetJavaVersion = 21
+    else targetJavaVersion = 17
+}
+
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
