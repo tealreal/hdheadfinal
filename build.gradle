@@ -40,7 +40,7 @@ processResources {
 
 int indexMajor = minecraft_version.indexOf(".");
 int indexMinor = minecraft_version.indexOf(".", indexMajor + 1);
-int major = Integer.parseInt(minecraft_version.substring(indexMajor + 1, indexMinor))
+int major = Integer.parseInt(minecraft_version.substring(indexMajor + 1, indexMinor < 0 ? minecraft_version.length() : indexMinor))
 int minor = indexMinor < 0 ? 0 : Integer.parseInt(minecraft_version.substring(indexMinor + 1))
 def targetJavaVersion = 8
 if (major == 17) targetJavaVersion = 16
@@ -49,6 +49,9 @@ else if (major == 20) {
     if (minor == 5 || minor == 6)
         targetJavaVersion = 21
     else targetJavaVersion = 17
+}
+else if (major == 21) {
+    targetJavaVersion = 21
 }
 
 tasks.withType(JavaCompile).configureEach {

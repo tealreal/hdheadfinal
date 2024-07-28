@@ -74,7 +74,7 @@ public interface DecompileHead extends Command<FabricClientCommandSource> {
                         .append(Text.literal("[Click here to copy as JSON]").setStyle(Style.EMPTY
                             .withColor(Formatting.GREEN)
                             .withBold(true)
-                            .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, new ItemStackArgument(itemStack.getRegistryEntry(), itemStack.getComponents()).asString(player.getWorld().getRegistryManager())))
+                            .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, new ItemStackArgument(itemStack.getRegistryEntry(), itemStack.getComponentChanges()).asString(player.getWorld().getRegistryManager())))
                             .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click here to copy the NBT")))
                         ));
                     context.getSource().getPlayer().sendMessage(text, false);
