@@ -11,11 +11,10 @@ import teal.hdhead.commands.Help;
 import teal.hdhead.commands.config.*;
 import teal.hdhead.config.ConfigObject;
 
-
 public final class HeadClient implements ClientModInitializer {
 
-    private static final ConfigObject config = ConfigObject.getConfigObject();
     public static final Logger logger = LoggerFactory.getLogger(HeadClient.class);
+    private static final ConfigObject config = ConfigObject.getConfigObject();
 
     private static boolean runMod = true;
 
